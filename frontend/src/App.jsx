@@ -7,9 +7,10 @@ import Dashboard from './pages/Dashboard';
 import BookList from './pages/BookList';
 import BookDetail from './pages/BookDetail';
 import AdminPage from './pages/AdminPage';
+import AddBook from './pages/AddBook';
 
 const App = () => {
-  const { user, loading } = useAuth();
+  const { user, userData, loading } = useAuth();
 
   if (loading) {
     return (
@@ -19,17 +20,24 @@ const App = () => {
     );
   }
 
+  // Determine redirection based on role
+  const getDashboardPath = () => {
+    if (!user || !userData) return "/login";
+    return userData.role === 'admin' ? "/admin/users" : "/dashboard";
+  };
+
   return (
     <Router>
       <div className="min-h-screen bg-gray-50">
         <Routes>
-          <Route path="/" element={<Navigate to={user ? "/dashboard" : "/login"} />} />
-          <Route path="/login" element={!user ? <Login /> : <Navigate to="/dashboard" />} />
-          <Route path="/register" element={!user ? <Register /> : <Navigate to="/dashboard" />} />
-          <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate to="/login" />} />
+          <Route path="/" element={<Navigate to={getDashboardPath()} />} />
+          <Route path="/login" element={!user ? <Login /> : <Navigate to={getDashboardPath()} />} />
+          <Route path="/register" element={!user ? <Register /> : <Navigate to={getDashboardPath()} />} />
+          <Route path="/dashboard" element={user ? (userData?.role === 'admin' ? <Navigate to="/admin/users" /> : <Dashboard />) : <Navigate to="/login" />} />
           <Route path="/books" element={user ? <BookList /> : <Navigate to="/login" />} />
           <Route path="/books/:id" element={user ? <BookDetail /> : <Navigate to="/login" />} />
-          <Route path="/admin/users" element={user ? <AdminPage /> : <Navigate to="/login" />} />
+          <Route path="/admin/users" element={user && userData?.role === 'admin' ? <AdminPage /> : <Navigate to="/dashboard" />} />
+          <Route path="/admin/add-book" element={user && userData?.role === 'admin' ? <AddBook /> : <Navigate to="/dashboard" />} />
         </Routes>
       </div>
     </Router>

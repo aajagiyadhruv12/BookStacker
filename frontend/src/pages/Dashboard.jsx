@@ -4,10 +4,11 @@ import Navbar from '../components/Navbar';
 import axios from 'axios';
 import { BookOpen, Users, Clock, Calendar, Plus, ChevronRight, Activity, TrendingUp, Search } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
   const { user, isAdmin, userData } = useAuth();
+  const navigate = useNavigate();
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -69,6 +70,7 @@ const Dashboard = () => {
           
           {isAdmin && (
             <motion.button
+              onClick={() => navigate('/admin/add-book')}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               className="bg-blue-600 text-white px-6 py-3 rounded-2xl font-bold flex items-center shadow-lg shadow-blue-200 hover:bg-blue-700 transition-all"

@@ -29,3 +29,6 @@ def create_app():
         return {"message": "Library Management System API is running"}
         
     return app
+
+# Expose app for Gunicorn's default 'app:app' command
+app = create_app()
