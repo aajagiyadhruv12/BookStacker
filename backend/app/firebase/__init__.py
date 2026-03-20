@@ -1,53 +1,45 @@
 import firebase_admin
-from firebase_admin import credentials, firestore, storage, auth
+from firebase_admin import credentials, firestore, storage
 import os
 import json
-from flask import current_app
 
 db = None
 bucket = None
 
 def init_firebase(app):
     global db, bucket
-    
-    # Check if Firebase is already initialized
-    if not firebase_admin._apps:
-        # Option 1: Use JSON string from ENV (Best for Render/Vercel)
-        service_account_json = os.getenv('FIREBASE_SERVICE_ACCOUNT_JSON')
-        
-        # Option 2: Use file path from Config/ENV
-        service_account_path = app.config.get('FIREBASE_SERVICE_ACCOUNT_PATH')
-        
-        if service_account_json:
-            try:
-                # Load JSON string into a dict
-                cred_dict = json.loads(service_account_json)
-                cred = credentials.Certificate(cred_dict)
-                firebase_admin.initialize_app(cred, {
-                    'storageBucket': 'bookstacker0.firebasestorage.app'
-                })
-            except Exception as e:
-                print(f"Error initializing Firebase from JSON string: {e}")
-                
+
+    if firebase_admin._apps:
+        return
+
+    service_account_json_str = os.getenv('FIREBASE_SERVICE_ACCOUNT_JSON')
+    service_account_path = app.config.get('FIREBASE_SERVICE_ACCOUNT_PATH')
+
+    cred = None
+    try:
+        if service_account_json_str:
+            # Production environment (Render): Load from environment variable
+            cred_dict = json.loads(service_account_json_str)
+            cred = credentials.Certificate(cred_dict)
         elif service_account_path and os.path.exists(service_account_path):
-            try:
-                cred = credentials.Certificate(service_account_path)
-                firebase_admin.initialize_app(cred, {
-                    'storageBucket': 'bookstacker0.firebasestorage.app'
-                })
-            except Exception as e:
-                print(f"Error initializing Firebase from path: {e}")
+            # Local development: Load from file path
+            cred = credentials.Certificate(service_account_path)
         else:
-            # Fallback for local development if neither is provided
-            try:
-                firebase_admin.initialize_app(options={
-                    'storageBucket': 'bookstacker0.firebasestorage.app'
-                })
-            except Exception as e:
-                print(f"Warning: Firebase initialization failed. {e}")
-            
-    db = firestore.client()
-    bucket = storage.bucket()
+            raise ValueError("Firebase credentials not found. Set FIREBASE_SERVICE_ACCOUNT_JSON for production or FIREBASE_SERVICE_ACCOUNT_PATH for local development.")
+
+        firebase_admin.initialize_app(cred, {
+            'storageBucket': app.config.get('FIREBASE_STORAGE_BUCKET')
+        })
+        db = firestore.client()
+        bucket = storage.bucket()
+        print("Firebase initialized successfully.")
+
+    except Exception as e:
+        print(f"FATAL: Firebase initialization failed: {e}")
+        # In a real app, you might want to exit or handle this more gracefully
+        # For now, we print a fatal error to make it obvious.
+        db = None
+        bucket = None
 
 def get_db():
     return db
