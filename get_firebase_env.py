@@ -3,21 +3,22 @@ import os
 
 def generate_render_env_string():
     # Try to find the service account file
-    possible_paths = [
-        'serviceAccountKey.json',
-        'backend/serviceAccountKey.json',
-        '../serviceAccountKey.json'
-    ]
+    possible_files = [f for f in os.listdir('.') if f.endswith('.json')]
     
     file_path = None
-    for path in possible_paths:
-        if os.path.exists(path):
-            file_path = path
-            break
+    for f in possible_files:
+        try:
+            with open(f, 'r') as jf:
+                data = json.load(jf)
+                if 'project_id' in data and 'private_key' in data:
+                    file_path = f
+                    break
+        except:
+            continue
             
     if not file_path:
-        print("Error: 'serviceAccountKey.json' not found in the current directory.")
-        print("Please place your Firebase Service Account JSON file in the root folder.")
+        print("Error: Firebase Service Account JSON file not found in the current directory.")
+        print("Please download it from Firebase Console (Project Settings > Service Accounts) and save it here.")
         return
 
     try:

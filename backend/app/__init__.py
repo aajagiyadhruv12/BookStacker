@@ -27,11 +27,13 @@ def create_app():
     app.register_blueprint(notifications_bp, url_prefix='/api/notifications')
     @app.route('/')
     def index():
-        from .firebase import get_db
+        from .firebase import get_db, get_init_error
         db = get_db()
+        error = get_init_error()
         return {
             "message": "Library Management System API is running",
-            "firebase_status": "Connected" if db else "Disconnected"
+            "firebase_status": "Connected" if db else "Disconnected",
+            "error_details": error if not db else None
         }
     return app
 

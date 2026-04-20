@@ -5,9 +5,10 @@ import json
 
 db = None
 bucket = None
+init_error = None
 
 def init_firebase(app):
-    global db, bucket
+    global db, bucket, init_error
 
     if firebase_admin._apps:
         db = firestore.client()
@@ -26,13 +27,21 @@ def init_firebase(app):
     try:
         if service_account_json_str:
             print("Attempting to initialize Firebase with JSON string...")
+            # Clean the string in case it has extra quotes or escaping from environment variables
+            service_account_json_str = service_account_json_str.strip()
+            if service_account_json_str.startswith("'") and service_account_json_str.endswith("'"):
+                service_account_json_str = service_account_json_str[1:-1]
+            if service_account_json_str.startswith('"') and service_account_json_str.endswith('"'):
+                service_account_json_str = service_account_json_str[1:-1]
+            
             cred_dict = json.loads(service_account_json_str)
             cred = credentials.Certificate(cred_dict)
         elif os.path.exists(service_account_path):
             print(f"Attempting to initialize Firebase with file: {service_account_path}")
             cred = credentials.Certificate(service_account_path)
         else:
-            print("WARNING: No Firebase credentials found in Environment Variables or serviceAccountKey.json")
+            init_error = "No credentials found. Ensure FIREBASE_SERVICE_ACCOUNT_JSON is set in Render."
+            print(f"WARNING: {init_error}")
             return
 
         firebase_admin.initialize_app(cred, {
@@ -40,9 +49,11 @@ def init_firebase(app):
         })
         db = firestore.client()
         bucket = storage.bucket()
+        init_error = None
         print("Firebase initialized successfully.")
 
     except Exception as e:
+        init_error = str(e)
         print(f"FATAL: Firebase initialization failed: {e}")
         db = None
         bucket = None
@@ -52,3 +63,6 @@ def get_db():
 
 def get_bucket():
     return bucket
+
+def get_init_error():
+    return init_error
