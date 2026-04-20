@@ -1,16 +1,14 @@
 import axios from 'axios';
 import { auth } from './firebase';
 
-// Use network IP so mobile devices can reach the API
-const API_URL = window.location.hostname === 'localhost'
-  ? 'http://localhost:3000/api'
-  : 'https://bookstacker.onrender.com/api';
+const API_URL = import.meta.env.VITE_API_URL ||
+  (window.location.hostname === 'localhost'
+    ? 'http://localhost:3000/api'
+    : 'https://bookstacker.onrender.com/api');
 
 const api = axios.create({
   baseURL: API_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
+  headers: { 'Content-Type': 'application/json' },
 });
 
 api.interceptors.request.use(async (config) => {
@@ -20,8 +18,6 @@ api.interceptors.request.use(async (config) => {
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
-}, (error) => {
-  return Promise.reject(error);
-});
+}, (error) => Promise.reject(error));
 
 export default api;

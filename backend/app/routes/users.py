@@ -8,13 +8,9 @@ users_bp = Blueprint('users', __name__)
 def get_profile(user_id):
     user = UserService.get_user_profile(user_id)
     if user:
-        if 'created_at' in user and hasattr(user['created_at'], 'isoformat'):
-            user['created_at'] = user['created_at'].isoformat()
-        
         loans = LoanService.get_user_loans(user_id)
         active_loans = sum(1 for loan in loans if loan.get('status') == 'active')
         read_books = len([loan for loan in loans if loan.get('status') == 'returned'])
-        
         user['stats'] = {
             'active': active_loans,
             'read': read_books,

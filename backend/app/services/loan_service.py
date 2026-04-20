@@ -138,6 +138,14 @@ class LoanService:
         return user_map
 
     @staticmethod
+    def _serialize(obj):
+        if hasattr(obj, 'isoformat'):
+            return obj.isoformat()
+        if isinstance(obj, dict):
+            return {k: LoanService._serialize(v) for k, v in obj.items()}
+        return obj
+
+    @staticmethod
     def get_all_loans():
         db = get_db()
         if not db:
@@ -148,8 +156,6 @@ class LoanService:
             loan = doc.to_dict()
             loan['id'] = doc.id
             loan['user_name'] = user_map.get(loan.get('user_id'), loan.get('user_id', 'Unknown'))
-            for key, value in loan.items():
-                if hasattr(value, 'isoformat'):
-                    loan[key] = value.isoformat()
+            loan = LoanService._serialize(loan)
             loans.append(loan)
         return loans

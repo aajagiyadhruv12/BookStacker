@@ -48,6 +48,14 @@ class ReservationService:
         return reservations
 
     @staticmethod
+    def _serialize(obj):
+        if hasattr(obj, 'isoformat'):
+            return obj.isoformat()
+        if isinstance(obj, dict):
+            return {k: ReservationService._serialize(v) for k, v in obj.items()}
+        return obj
+
+    @staticmethod
     def get_all_reservations():
         db = get_db()
         if not db:
@@ -62,5 +70,6 @@ class ReservationService:
             res = doc.to_dict()
             res['id'] = doc.id
             res['user_name'] = user_map.get(res.get('user_id'), res.get('user_id', 'Unknown'))
+            res = ReservationService._serialize(res)
             reservations.append(res)
         return reservations
