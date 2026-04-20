@@ -203,7 +203,7 @@ const BookList = () => {
         </div>
 
         {/* Category filter chips */}
-        <div className="flex gap-2 flex-wrap mb-10">
+        <div className="flex gap-2 overflow-x-auto pb-4 no-scrollbar mb-6 -mx-4 px-4 sm:mx-0 sm:px-0">
           {CATEGORIES.map(cat => (
             <motion.button
               key={cat}

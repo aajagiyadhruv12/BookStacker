@@ -80,7 +80,7 @@ const Profile = () => {
             )}
             <p className="text-blue-500 font-bold uppercase tracking-widest text-xs mt-2">{userData?.role}</p>
             <div className="w-full h-px bg-gray-50 my-8"></div>
-            <div className="grid grid-cols-2 gap-4 w-full">
+            <div className="grid grid-cols-2 sm:grid-cols-2 gap-4 w-full">
               <div className="p-4 bg-gray-50 rounded-2xl">
                 <BookOpen className="text-blue-500 mx-auto mb-2" size={20} />
                 <p className="text-2xl font-black text-gray-900">{userData?.stats?.read || 0}</p>

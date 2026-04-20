@@ -201,8 +201,8 @@ const AdminPage = () => {
             <p className="text-gray-500 mt-2 font-medium">Manage library members, books, and loans.</p>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-center gap-4 bg-white p-1.5 rounded-2xl shadow-sm border border-gray-100">
-            <div className="flex">
+          <div className="flex flex-col sm:flex-row items-center gap-4 bg-white p-1.5 rounded-2xl shadow-sm border border-gray-100 w-full md:w-auto overflow-x-auto no-scrollbar">
+            <div className="flex min-w-max">
               <button
                 onClick={() => setActiveTab('users')}
                 className={`px-6 py-2.5 rounded-xl text-sm font-black transition-all ${activeTab === 'users' ? 'bg-blue-600 text-white shadow-lg shadow-blue-200' : 'text-gray-400 hover:text-gray-600'}`}
@@ -256,7 +256,8 @@ const AdminPage = () => {
           </div>
         ) : activeTab === 'users' ? (
           <div className="bg-white rounded-[2rem] shadow-sm border border-gray-100 overflow-hidden">
-            <table className="w-full text-left">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left min-w-[600px]">
               <thead>
                 <tr className="bg-gray-50 border-b border-gray-100">
                   <th className="px-8 py-5 text-xs font-black text-gray-400 uppercase tracking-widest">User Details</th>
@@ -293,11 +294,12 @@ const AdminPage = () => {
                   </motion.tr>
                 ))}
               </tbody>
-            </table>
+            </div>
           </div>
         ) : activeTab === 'books' ? (
           <div className="bg-white rounded-[2rem] shadow-sm border border-gray-100 overflow-hidden">
-            <table className="w-full text-left">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left min-w-[600px]">
               <thead>
                 <tr className="bg-gray-50 border-b border-gray-100">
                   <th className="px-8 py-5 text-xs font-black text-gray-400 uppercase tracking-widest">Book Details</th>
@@ -348,10 +350,12 @@ const AdminPage = () => {
                 ))}
               </tbody>
             </table>
+            </div>
           </div>
         ) : activeTab === 'loans' ? (
           <div className="bg-white rounded-[2rem] shadow-sm border border-gray-100 overflow-hidden">
-            <table className="w-full text-left">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left min-w-[600px]">
               <thead>
                 <tr className="bg-gray-50 border-b border-gray-100">
                   <th className="px-8 py-5 text-xs font-black text-gray-400 uppercase tracking-widest">Loan Details</th>
@@ -384,6 +388,7 @@ const AdminPage = () => {
                 ))}
               </tbody>
             </table>
+            </div>
           </div>
         ) : activeTab === 'issued' ? (
           <div className="bg-white rounded-[2rem] shadow-sm border border-gray-100 overflow-hidden">
@@ -392,7 +397,7 @@ const AdminPage = () => {
                 <h2 className="text-lg font-black text-gray-900 flex items-center"><BookMarked size={20} className="mr-2 text-orange-500" /> Issued Books</h2>
                 <span className="px-3 py-1 rounded-lg bg-orange-100 text-orange-600 text-xs font-black">{filteredIssuedBooks.length} Active</span>
               </div>
-              <div className="flex gap-3">
+              <div className="flex flex-col sm:flex-row gap-3">
                 <div className="relative flex-1">
                   <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                   <input
@@ -414,7 +419,8 @@ const AdminPage = () => {
                 </select>
               </div>
             </div>
-            <table className="w-full text-left">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left min-w-[800px]">
               <thead>
                 <tr className="bg-gray-50 border-b border-gray-100">
                   <th className="px-8 py-5 text-xs font-black text-gray-400 uppercase tracking-widest">#</th>
@@ -473,6 +479,7 @@ const AdminPage = () => {
                 )}
               </tbody>
             </table>
+            </div>
           </div>
         ) : activeTab === 'reservations' ? (
           <div className="bg-white rounded-[2rem] shadow-sm border border-gray-100 overflow-hidden">
@@ -492,7 +499,8 @@ const AdminPage = () => {
                 />
               </div>
             </div>
-            <table className="w-full text-left">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left min-w-[800px]">
               <thead>
                 <tr className="bg-gray-50 border-b border-gray-100">
                   <th className="px-8 py-5 text-xs font-black text-gray-400 uppercase tracking-widest">#</th>
@@ -542,6 +550,7 @@ const AdminPage = () => {
                 )}
               </tbody>
             </table>
+            </div>
           </div>
         ) : (
           <div className="bg-white rounded-[2rem] shadow-sm border border-gray-100 overflow-hidden">
@@ -561,9 +570,10 @@ const AdminPage = () => {
                 />
               </div>
             </div>
-            <table className="w-full text-left">
-              <thead>
-                <tr className="bg-gray-50 border-b border-gray-100">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left min-w-[800px]">
+                <thead>
+                  <tr className="bg-gray-50 border-b border-gray-100">
                   <th className="px-8 py-5 text-xs font-black text-gray-400 uppercase tracking-widest">#</th>
                   <th className="px-8 py-5 text-xs font-black text-gray-400 uppercase tracking-widest">Book Name</th>
                   <th className="px-8 py-5 text-xs font-black text-gray-400 uppercase tracking-widest">Member</th>
@@ -615,6 +625,7 @@ const AdminPage = () => {
                 )}
               </tbody>
             </table>
+            </div>
           </div>
         )}
       </main>

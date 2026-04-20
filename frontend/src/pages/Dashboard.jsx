@@ -56,12 +56,12 @@ const Dashboard = () => {
     <div className="min-h-screen" style={{background: 'linear-gradient(135deg, #f0f4ff 0%, #faf5ff 50%, #f0fdf4 100%)'}}>
       <Navbar />
       <main className="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-10 gap-6">
           <div>
             <motion.h1 
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="text-4xl font-black text-gray-900 tracking-tight"
+              className="text-3xl sm:text-4xl font-black text-gray-900 tracking-tight"
             >
               Hello, {userData?.name?.split(' ')[0] || 'User'}! 👋
             </motion.h1>
@@ -73,7 +73,7 @@ const Dashboard = () => {
               onClick={() => navigate('/admin/add-book')}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="bg-gradient-to-r from-indigo-600 to-violet-600 text-white px-6 py-3 rounded-2xl font-bold flex items-center shadow-lg shadow-indigo-200 hover:from-indigo-700 hover:to-violet-700 transition-all btn-glow"
+              className="w-full sm:w-auto bg-gradient-to-r from-indigo-600 to-violet-600 text-white px-6 py-3 rounded-2xl font-bold flex items-center justify-center shadow-lg shadow-indigo-200 hover:from-indigo-700 hover:to-violet-700 transition-all btn-glow"
             >
               <Plus size={20} className="mr-2" /> Add New Book
             </motion.button>
@@ -90,7 +90,7 @@ const Dashboard = () => {
         ) : (
           <div className="space-y-10">
             {/* Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {isAdmin ? (
                 <>
                   <StatCard icon={BookOpen} label="Total Inventory" value={stats?.total_books || 0} color="bg-gradient-to-br from-blue-500 to-blue-600" delay={0.1} />

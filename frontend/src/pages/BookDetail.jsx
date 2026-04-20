@@ -206,7 +206,7 @@ const BookDetail = () => {
                   <User size={18} className="mr-2 text-indigo-400" /> {book.author}
                 </p>
 
-                <div className="grid grid-cols-2 gap-4 mb-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                   <div className="glass p-4 rounded-2xl flex items-center gap-3">
                     <div className="p-2 bg-indigo-50 rounded-xl"><Tag size={16} className="text-indigo-500" /></div>
                     <div>
@@ -229,7 +229,7 @@ const BookDetail = () => {
               </div>
 
               {/* Actions */}
-              <div className="flex flex-wrap gap-3 pt-6 border-t border-gray-100">
+              <div className="flex flex-col sm:flex-row gap-3 pt-6 border-t border-gray-100">
                 {book.available_copies > 0 ? (
                   <button
                     onClick={handleIssue}

@@ -100,14 +100,14 @@ const AddBook = () => {
         </motion.button>
 
         <div className="bg-white rounded-[2.5rem] shadow-xl shadow-blue-900/5 border border-gray-100 overflow-hidden">
-          <div className="bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 px-10 py-12 text-white relative overflow-hidden">
+          <div className="bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 px-6 sm:px-10 py-12 text-white relative overflow-hidden">
             <div className="absolute -bottom-8 -right-8 w-40 h-40 bg-white/10 rounded-full blur-2xl"></div>
             <h1 className="text-4xl font-black tracking-tight relative z-10">Add New Book</h1>
             <p className="mt-2 text-indigo-100 font-medium relative z-10">Register a new addition to the library's collection.</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="p-10 space-y-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <form onSubmit={handleSubmit} className="p-6 sm:p-10 space-y-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
               {/* Title */}
               <div className="space-y-2 group">
                 <label className="text-sm font-black text-gray-400 uppercase tracking-widest ml-1">Book Title</label>
@@ -208,9 +208,9 @@ const AddBook = () => {
                   Auto-fetch from Google Books
                 </button>
               </div>
-              <div className="flex gap-4 items-start">
+              <div className="flex flex-col sm:flex-row gap-4 items-start">
                 {/* Preview box */}
-                <div className="w-24 h-32 rounded-2xl overflow-hidden flex-shrink-0 border-2 border-dashed border-gray-200 bg-gray-50 flex items-center justify-center">
+                <div className="w-24 h-32 rounded-2xl overflow-hidden flex-shrink-0 border-2 border-dashed border-gray-200 bg-gray-50 flex items-center justify-center mx-auto sm:mx-0">
                   {coverSearching ? (
                     <Loader2 size={20} className="text-indigo-400 animate-spin" />
                   ) : coverPreview ? (
