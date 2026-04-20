@@ -27,6 +27,7 @@ def generate_render_env_string():
             # Convert to a single-line string
             env_string = json.dumps(data)
             print("\n" + "="*50)
+            print(f"SUCCESS! Found file: {file_path}")
             print("STEP 1: Copy the string below (everything between the quotes):")
             print("="*50 + "\n")
             print(env_string)

@@ -51,8 +51,10 @@ def init_firebase(app):
                 print(f"WARNING: {init_error}")
                 return
 
+        bucket_name = app.config.get('FIREBASE_STORAGE_BUCKET') or os.getenv('FIREBASE_STORAGE_BUCKET') or 'bookstacker0.firebasestorage.app'
+        
         firebase_admin.initialize_app(cred, {
-            'storageBucket': app.config.get('FIREBASE_STORAGE_BUCKET')
+            'storageBucket': bucket_name
         })
         db = firestore.client()
         bucket = storage.bucket()
