@@ -15,7 +15,8 @@ def create_app():
     CORS(app, resources={r"/api/*": {
         "origins": ["https://book-stacker.vercel.app", "http://localhost:5173", "http://localhost:3000"],
         "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-        "allow_headers": ["Content-Type", "Authorization"]
+        "allow_headers": ["Content-Type", "Authorization", "Access-Control-Allow-Origin"],
+        "expose_headers": ["Content-Type", "Authorization"]
     }}, supports_credentials=True)
     init_firebase(app)
     app.register_blueprint(books_bp, url_prefix='/api/books')
@@ -26,7 +27,12 @@ def create_app():
     app.register_blueprint(notifications_bp, url_prefix='/api/notifications')
     @app.route('/')
     def index():
-        return {"message": "Library Management System API is running"}
+        from .firebase import get_db
+        db = get_db()
+        return {
+            "message": "Library Management System API is running",
+            "firebase_status": "Connected" if db else "Disconnected"
+        }
     return app
 
 # Expose app for Gunicorn's default 'app:app' command
