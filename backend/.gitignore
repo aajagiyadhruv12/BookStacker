@@ -1,0 +1,31 @@
+__pycache__/
+*.py[cod]
+*$py.class
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak
+venv.bak
+instance/
+.pytest_cache/
+.coverage
+htmlcov/
+serviceAccountKey.json
+
+# Logs
+server_log.txt
+*.log
+
+# Node (accidentally placed in backend)
+node_modules/
+package-lock.json
+package.json
+
+# One-time seed/debug scripts
+enrich_db.py
+inspect_db.py
+seed_books.py
+seed_demo_data.py
+init_admin.py
