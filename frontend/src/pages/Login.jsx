@@ -4,7 +4,7 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { motion } from 'framer-motion';
-import { Book, Mail, Lock, ArrowRight, Github, Chrome } from 'lucide-react';
+import { Book, Mail, Lock, ArrowRight } from 'lucide-react';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -130,24 +130,6 @@ const Login = () => {
               {!loading && <ArrowRight size={20} />}
             </motion.button>
           </form>
-
-          <div className="mt-10">
-            <div className="relative flex items-center justify-center mb-8">
-              <div className="w-full h-px bg-gray-100"></div>
-              <span className="absolute bg-white px-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Or continue with</span>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <button className="flex items-center justify-center space-x-2 py-3 border border-gray-100 rounded-xl hover:bg-gray-50 transition-all">
-                <Chrome size={18} className="text-gray-600" />
-                <span className="text-sm font-bold text-gray-700">Google</span>
-              </button>
-              <button className="flex items-center justify-center space-x-2 py-3 border border-gray-100 rounded-xl hover:bg-gray-50 transition-all">
-                <Github size={18} className="text-gray-600" />
-                <span className="text-sm font-bold text-gray-700">Github</span>
-              </button>
-            </div>
-          </div>
 
           <p className="mt-10 text-center text-gray-500 font-medium">
             Don't have an account? <Link to="/register" className="text-blue-600 font-black hover:underline ml-1">Create Account</Link>
