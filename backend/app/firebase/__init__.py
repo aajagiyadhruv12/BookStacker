@@ -15,7 +15,7 @@ def init_firebase(app):
         return
 
     service_account_json_str = os.getenv('FIREBASE_SERVICE_ACCOUNT_JSON')
-    service_account_path = app.config.get('FIREBASE_SERVICE_ACCOUNT_PATH')
+    service_account_path = app.config.get('FIREBASE_SERVICE_ACCOUNT_PATH') or 'serviceAccountKey.json'
 
     # Resolve relative path to absolute based on this file's directory
     if service_account_path and not os.path.isabs(service_account_path):
@@ -25,12 +25,15 @@ def init_firebase(app):
     cred = None
     try:
         if service_account_json_str:
+            print("Attempting to initialize Firebase with JSON string...")
             cred_dict = json.loads(service_account_json_str)
             cred = credentials.Certificate(cred_dict)
-        elif service_account_path and os.path.exists(service_account_path):
+        elif os.path.exists(service_account_path):
+            print(f"Attempting to initialize Firebase with file: {service_account_path}")
             cred = credentials.Certificate(service_account_path)
         else:
-            raise ValueError(f"Firebase credentials not found. Looked at: {service_account_path}")
+            print("WARNING: No Firebase credentials found in Environment Variables or serviceAccountKey.json")
+            return
 
         firebase_admin.initialize_app(cred, {
             'storageBucket': app.config.get('FIREBASE_STORAGE_BUCKET')
