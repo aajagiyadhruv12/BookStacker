@@ -107,12 +107,12 @@ const Register = () => {
       </div>
 
       {/* ── Right Panel ── */}
-      <div className="flex-1 flex items-center justify-center p-8 sm:p-12 lg:p-20 bg-white">
+      <div className="flex-1 flex items-center justify-center min-h-screen bg-white px-6 py-12 sm:px-10">
         <motion.div
           initial={{ opacity: 0, x: 24 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5 }}
-          className="w-full max-w-md"
+          className="w-full max-w-sm"
         >
           {/* Mobile logo */}
           <div className="flex md:hidden items-center gap-2 mb-8">
@@ -125,12 +125,12 @@ const Register = () => {
             </span>
           </div>
 
-          <div className="mb-10">
-            <h2 className="text-4xl font-black text-gray-900 mb-2">Create Account</h2>
-            <p className="text-gray-500 font-medium">Fill in your details to get started for free.</p>
+          <div className="mb-8">
+            <h2 className="text-3xl font-black text-gray-900 mb-1">Create Account</h2>
+            <p className="text-gray-500 font-medium text-sm">Fill in your details to get started for free.</p>
           </div>
 
-          <form onSubmit={handleRegister} className="space-y-5">
+          <form onSubmit={handleRegister} className="space-y-4">
             {/* Name */}
             <div>
               <label className="block text-xs font-black text-gray-600 uppercase tracking-widest mb-2">Full Name</label>
@@ -138,7 +138,7 @@ const Register = () => {
                 <User className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
                 <input
                   type="text"
-                  className="w-full pl-11 pr-4 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:border-violet-400 focus:bg-white outline-none text-gray-900 font-medium transition-all"
+                  className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border-2 border-transparent rounded-2xl focus:border-violet-400 focus:bg-white outline-none text-gray-900 font-medium transition-all text-sm"
                   placeholder="John Doe"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
@@ -154,7 +154,7 @@ const Register = () => {
                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
                 <input
                   type="email"
-                  className="w-full pl-11 pr-4 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:border-violet-400 focus:bg-white outline-none text-gray-900 font-medium transition-all"
+                  className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border-2 border-transparent rounded-2xl focus:border-violet-400 focus:bg-white outline-none text-gray-900 font-medium transition-all text-sm"
                   placeholder="name@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -170,7 +170,7 @@ const Register = () => {
                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
                 <input
                   type="password"
-                  className="w-full pl-11 pr-4 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:border-violet-400 focus:bg-white outline-none text-gray-900 font-medium transition-all"
+                  className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border-2 border-transparent rounded-2xl focus:border-violet-400 focus:bg-white outline-none text-gray-900 font-medium transition-all text-sm"
                   placeholder="Min. 6 characters"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -185,7 +185,7 @@ const Register = () => {
               whileTap={{ scale: 0.99 }}
               type="submit"
               disabled={loading}
-              className={`w-full py-4 rounded-2xl font-black text-lg flex items-center justify-center gap-2 shadow-xl transition-all mt-2 ${
+              className={`w-full py-3.5 rounded-2xl font-black text-base flex items-center justify-center gap-2 shadow-xl transition-all mt-2 ${
                 loading
                   ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
                   : 'bg-gradient-to-r from-violet-600 to-indigo-600 text-white hover:from-violet-700 hover:to-indigo-700 shadow-violet-200'
