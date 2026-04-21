@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { auth, db } from '../services/firebase';
+import { auth } from '../services/firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
@@ -27,7 +27,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] flex flex-col md:flex-row">
+    <div className="min-h-screen bg-[#F8FAFC] flex flex-col md:flex-row overflow-x-hidden">
       {/* Left Side: Branding/Intro */}
       <div className="hidden md:flex md:w-1/2 bg-blue-600 p-12 flex-col justify-between text-white relative overflow-hidden">
         <div className="relative z-10">
@@ -74,7 +74,7 @@ const Login = () => {
       </div>
 
       {/* Right Side: Login Form */}
-      <div className="flex-1 flex items-center justify-center p-8 sm:p-12 lg:p-24 bg-white">
+      <div className="flex-1 flex items-center justify-center p-6 sm:p-10 lg:p-20 bg-white">
         <motion.div 
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -131,7 +131,7 @@ const Login = () => {
             </motion.button>
           </form>
 
-          <p className="mt-10 text-center text-gray-500 font-medium">
+          <p className="mt-8 text-center text-gray-500 font-medium">
             Don't have an account? <Link to="/register" className="text-blue-600 font-black hover:underline ml-1">Create Account</Link>
           </p>
         </motion.div>

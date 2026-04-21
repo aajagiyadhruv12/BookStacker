@@ -163,12 +163,12 @@ const BookList = () => {
             <motion.h1
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-5xl font-black text-gray-900 tracking-tight mb-3"
+              className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 tracking-tight mb-3"
             >
               Discover Your Next{' '}
               <span className="gradient-text">Great Read</span>
             </motion.h1>
-            <p className="text-gray-500 text-lg font-medium leading-relaxed">
+            <p className="text-gray-500 text-base sm:text-lg font-medium leading-relaxed">
               Explore our curated collection — from timeless classics to modern bestsellers.
             </p>
           </div>

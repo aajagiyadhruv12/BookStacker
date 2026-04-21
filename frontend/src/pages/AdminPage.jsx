@@ -197,53 +197,52 @@ const AdminPage = () => {
       <main className="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
           <div>
-            <h1 className="text-4xl font-black text-gray-900 tracking-tight">Admin Console</h1>
+            <h1 className="text-3xl sm:text-4xl font-black text-gray-900 tracking-tight">Admin Console</h1>
             <p className="text-gray-500 mt-2 font-medium">Manage library members, books, and loans.</p>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-center gap-4 bg-white p-1.5 rounded-2xl shadow-sm border border-gray-100 w-full md:w-auto overflow-x-auto no-scrollbar">
-            <div className="flex min-w-max">
+          <div className="flex flex-col gap-4 bg-white p-1.5 rounded-2xl shadow-sm border border-gray-100 w-full md:w-auto">
+            <div className="flex overflow-x-auto no-scrollbar gap-1">
               <button
                 onClick={() => setActiveTab('users')}
-                className={`px-6 py-2.5 rounded-xl text-sm font-black transition-all ${activeTab === 'users' ? 'bg-blue-600 text-white shadow-lg shadow-blue-200' : 'text-gray-400 hover:text-gray-600'}`}
+                className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-black transition-all whitespace-nowrap ${activeTab === 'users' ? 'bg-blue-600 text-white shadow-lg shadow-blue-200' : 'text-gray-400 hover:text-gray-600'}`}
               >
-                <div className="flex items-center"><Users size={18} className="mr-2" /> Users</div>
+                <div className="flex items-center"><Users size={16} className="mr-1.5" /> Users</div>
               </button>
               <button
                 onClick={() => setActiveTab('books')}
-                className={`px-6 py-2.5 rounded-xl text-sm font-black transition-all ${activeTab === 'books' ? 'bg-blue-600 text-white shadow-lg shadow-blue-200' : 'text-gray-400 hover:text-gray-600'}`}
+                className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-black transition-all whitespace-nowrap ${activeTab === 'books' ? 'bg-blue-600 text-white shadow-lg shadow-blue-200' : 'text-gray-400 hover:text-gray-600'}`}
               >
-                <div className="flex items-center"><BookOpen size={18} className="mr-2" /> Books</div>
+                <div className="flex items-center"><BookOpen size={16} className="mr-1.5" /> Books</div>
               </button>
               <button
                 onClick={() => setActiveTab('loans')}
-                className={`px-6 py-2.5 rounded-xl text-sm font-black transition-all ${activeTab === 'loans' ? 'bg-blue-600 text-white shadow-lg shadow-blue-200' : 'text-gray-400 hover:text-gray-600'}`}
+                className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-black transition-all whitespace-nowrap ${activeTab === 'loans' ? 'bg-blue-600 text-white shadow-lg shadow-blue-200' : 'text-gray-400 hover:text-gray-600'}`}
               >
-                <div className="flex items-center"><Clock size={18} className="mr-2" /> Loans</div>
+                <div className="flex items-center"><Clock size={16} className="mr-1.5" /> Loans</div>
               </button>
               <button
                 onClick={() => setActiveTab('issued')}
-                className={`px-6 py-2.5 rounded-xl text-sm font-black transition-all ${activeTab === 'issued' ? 'bg-orange-500 text-white shadow-lg shadow-orange-200' : 'text-gray-400 hover:text-gray-600'}`}
+                className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-black transition-all whitespace-nowrap ${activeTab === 'issued' ? 'bg-orange-500 text-white shadow-lg shadow-orange-200' : 'text-gray-400 hover:text-gray-600'}`}
               >
-                <div className="flex items-center"><BookMarked size={18} className="mr-2" /> Issued</div>
+                <div className="flex items-center"><BookMarked size={16} className="mr-1.5" /> Issued</div>
               </button>
               <button
                 onClick={() => setActiveTab('returned')}
-                className={`px-6 py-2.5 rounded-xl text-sm font-black transition-all ${activeTab === 'returned' ? 'bg-green-600 text-white shadow-lg shadow-green-200' : 'text-gray-400 hover:text-gray-600'}`}
+                className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-black transition-all whitespace-nowrap ${activeTab === 'returned' ? 'bg-green-600 text-white shadow-lg shadow-green-200' : 'text-gray-400 hover:text-gray-600'}`}
               >
-                <div className="flex items-center"><RotateCcw size={18} className="mr-2" /> Returned</div>
+                <div className="flex items-center"><RotateCcw size={16} className="mr-1.5" /> Returned</div>
               </button>
               <button
                 onClick={() => setActiveTab('reservations')}
-                className={`px-6 py-2.5 rounded-xl text-sm font-black transition-all ${activeTab === 'reservations' ? 'bg-purple-600 text-white shadow-lg shadow-purple-200' : 'text-gray-400 hover:text-gray-600'}`}
+                className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-black transition-all whitespace-nowrap ${activeTab === 'reservations' ? 'bg-purple-600 text-white shadow-lg shadow-purple-200' : 'text-gray-400 hover:text-gray-600'}`}
               >
-                <div className="flex items-center"><BookCheck size={18} className="mr-2" /> Reservations</div>
+                <div className="flex items-center"><BookCheck size={16} className="mr-1.5" /> Reservations</div>
               </button>
             </div>
-            <div className="h-8 w-px bg-gray-100 hidden sm:block"></div>
             <button
               onClick={() => navigate('/admin/add-book')}
-              className="px-6 py-2.5 rounded-xl text-sm font-black bg-blue-50 text-blue-600 hover:bg-blue-100 transition-all flex items-center"
+              className="px-4 py-2.5 rounded-xl text-sm font-black bg-blue-50 text-blue-600 hover:bg-blue-100 transition-all flex items-center justify-center"
             >
               <Plus size={18} className="mr-2" /> Add Book
             </button>

@@ -191,7 +191,7 @@ const BookDetail = () => {
 
           <div className="flex flex-col md:flex-row gap-0">
             {/* Book Cover */}
-            <div className="md:w-64 flex-shrink-0 flex justify-center md:justify-start px-8 -mt-20 pb-8 md:pb-0">
+            <div className="md:w-64 flex-shrink-0 flex justify-center md:justify-start px-6 sm:px-8 -mt-20 pb-6 md:pb-0">
               <div className="w-40 h-56 md:w-48 md:h-64 rounded-2xl overflow-hidden shadow-2xl shadow-indigo-900/30 border-4 border-white float relative">
                 <BookCoverDetail book={book} />
               </div>
@@ -201,7 +201,7 @@ const BookDetail = () => {
             <div className="flex-1 p-8 pt-4 md:pt-8 flex flex-col justify-between">
               <div>
                 <span className="text-xs font-black text-indigo-400 uppercase tracking-widest">ISBN: {book.isbn || 'N/A'}</span>
-                <h1 className="text-4xl font-black text-gray-900 mt-2 mb-2 leading-tight">{book.title}</h1>
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-gray-900 mt-2 mb-2 leading-tight">{book.title}</h1>
                 <p className="text-xl text-gray-500 flex items-center mb-6 font-semibold">
                   <User size={18} className="mr-2 text-indigo-400" /> {book.author}
                 </p>
