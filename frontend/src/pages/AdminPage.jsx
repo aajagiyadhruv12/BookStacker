@@ -28,16 +28,21 @@ const AdminPage = () => {
       else if (activeTab === 'books') fetchBooks();
       else if (activeTab === 'loans' || activeTab === 'issued' || activeTab === 'returned') fetchLoans();
       else if (activeTab === 'reservations') fetchReservations();
+    } else {
+      // If auth is done but user isn't admin, stop loading
+      setLoading(false);
     }
   }, [isAdmin, activeTab]);
 
   const fetchUsers = async () => {
     setLoading(true);
     try {
+      console.log('Fetching users...');
       const response = await api.get('/users');
-      setUsers(response.data);
+      setUsers(response.data || []);
     } catch (error) {
-      toast.error('Failed to fetch users');
+      console.error('Fetch users error:', error);
+      toast.error('Failed to fetch users. Check console.');
     } finally {
       setLoading(false);
     }
@@ -46,8 +51,9 @@ const AdminPage = () => {
   const fetchLoans = async () => {
     setLoading(true);
     try {
+      console.log('Fetching loans...');
       const response = await api.get('/loans');
-      setLoans(response.data);
+      setLoans(response.data || []);
     } catch (error) {
       console.error('Fetch loans error:', error?.response?.data || error.message);
       toast.error(`Failed to fetch loans: ${error?.response?.data?.error || error.message}`);
@@ -93,9 +99,11 @@ const AdminPage = () => {
   const fetchBooks = async () => {
     setLoading(true);
     try {
+      console.log('Fetching books...');
       const response = await api.get('/books');
-      setBooks(response.data);
+      setBooks(response.data || []);
     } catch (error) {
+      console.error('Fetch books error:', error);
       toast.error('Failed to fetch books');
     } finally {
       setLoading(false);
@@ -105,9 +113,11 @@ const AdminPage = () => {
   const fetchReservations = async () => {
     setLoading(true);
     try {
+      console.log('Fetching reservations...');
       const response = await api.get('/reservations');
-      setReservations(response.data);
+      setReservations(response.data || []);
     } catch (error) {
+      console.error('Fetch reservations error:', error);
       toast.error('Failed to fetch reservations');
     } finally {
       setLoading(false);
@@ -250,51 +260,60 @@ const AdminPage = () => {
         </div>
 
         {loading ? (
-          <div className="flex justify-center py-20">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+          <div className="flex flex-col items-center justify-center py-20">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
+            <p className="text-gray-500 font-bold animate-pulse tracking-tight">Fetching data from library...</p>
           </div>
         ) : activeTab === 'users' ? (
           <div className="bg-white rounded-[2rem] shadow-sm border border-gray-100 overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full text-left min-w-[600px]">
-              <thead>
-                <tr className="bg-gray-50 border-b border-gray-100">
-                  <th className="px-8 py-5 text-xs font-black text-gray-400 uppercase tracking-widest">User Details</th>
-                  <th className="px-8 py-5 text-xs font-black text-gray-400 uppercase tracking-widest">Role</th>
-                  <th className="px-8 py-5 text-xs font-black text-gray-400 uppercase tracking-widest">Joined Date</th>
-                  <th className="px-8 py-5 text-xs font-black text-gray-400 uppercase tracking-widest text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-50">
-                {users.map((user) => (
-                  <motion.tr key={user.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="hover:bg-blue-50/30 transition-colors group">
-                    <td className="px-8 py-6">
-                      <div className="flex items-center">
-                        <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-100 to-indigo-100 flex items-center justify-center text-blue-600 font-black mr-4">{user.name?.charAt(0).toUpperCase()}</div>
-                        <div>
-                          <p className="font-black text-gray-900">{user.name}</p>
-                          <div className="flex items-center text-xs text-gray-400 font-bold mt-1"><Mail size={12} className="mr-1" /> {user.email}</div>
+            {users.length > 0 ? (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left min-w-[600px]">
+                <thead>
+                  <tr className="bg-gray-50 border-b border-gray-100">
+                    <th className="px-8 py-5 text-xs font-black text-gray-400 uppercase tracking-widest">User Details</th>
+                    <th className="px-8 py-5 text-xs font-black text-gray-400 uppercase tracking-widest">Role</th>
+                    <th className="px-8 py-5 text-xs font-black text-gray-400 uppercase tracking-widest">Joined Date</th>
+                    <th className="px-8 py-5 text-xs font-black text-gray-400 uppercase tracking-widest text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-50">
+                  {users.map((user) => (
+                    <motion.tr key={user.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="hover:bg-blue-50/30 transition-colors group">
+                      <td className="px-8 py-6">
+                        <div className="flex items-center">
+                          <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-100 to-indigo-100 flex items-center justify-center text-blue-600 font-black mr-4">{user.name?.charAt(0).toUpperCase()}</div>
+                          <div>
+                            <p className="font-black text-gray-900">{user.name}</p>
+                            <div className="flex items-center text-xs text-gray-400 font-bold mt-1"><Mail size={12} className="mr-1" /> {user.email}</div>
+                          </div>
                         </div>
-                      </div>
-                    </td>
-                    <td className="px-8 py-6">
-                      <span className={`px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest ${user.role === 'admin' ? 'bg-purple-100 text-purple-600' : 'bg-blue-100 text-blue-600'}`}>{user.role}</span>
-                    </td>
-                    <td className="px-8 py-6">
-                      <div className="flex items-center text-sm text-gray-500 font-medium"><Calendar size={14} className="mr-2 opacity-40" /> {user.created_at ? new Date(user.created_at).toLocaleDateString() : 'N/A'}</div>
-                    </td>
-                    <td className="px-8 py-6 text-right">
-                      <div className="flex items-center justify-end space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button onClick={() => navigate(`/admin/users/${user.id}`)} className="px-4 py-2 bg-blue-50 text-blue-600 text-xs font-black rounded-xl hover:bg-blue-100 transition-all">View</button>
-                        <button className="p-2 text-gray-400 hover:text-blue-600 hover:bg-white rounded-xl shadow-sm border border-transparent hover:border-gray-100 transition-all"><Edit size={18} /></button>
-                        <button className="p-2 text-gray-400 hover:text-red-600 hover:bg-white rounded-xl shadow-sm border border-transparent hover:border-gray-100 transition-all"><Trash2 size={18} /></button>
-                      </div>
-                    </td>
-                  </motion.tr>
-                ))}
-              </tbody>
-            </table>
-            </div>
+                      </td>
+                      <td className="px-8 py-6">
+                        <span className={`px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest ${user.role === 'admin' ? 'bg-purple-100 text-purple-600' : 'bg-blue-100 text-blue-600'}`}>{user.role}</span>
+                      </td>
+                      <td className="px-8 py-6">
+                        <div className="flex items-center text-sm text-gray-500 font-medium"><Calendar size={14} className="mr-2 opacity-40" /> {user.created_at ? new Date(user.created_at).toLocaleDateString() : 'N/A'}</div>
+                      </td>
+                      <td className="px-8 py-6 text-right">
+                        <div className="flex items-center justify-end space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <button onClick={() => navigate(`/admin/users/${user.id}`)} className="px-4 py-2 bg-blue-50 text-blue-600 text-xs font-black rounded-xl hover:bg-blue-100 transition-all">View</button>
+                          <button className="p-2 text-gray-400 hover:text-blue-600 hover:bg-white rounded-xl shadow-sm border border-transparent hover:border-gray-100 transition-all"><Edit size={18} /></button>
+                          <button className="p-2 text-gray-400 hover:text-red-600 hover:bg-white rounded-xl shadow-sm border border-transparent hover:border-gray-100 transition-all"><Trash2 size={18} /></button>
+                        </div>
+                      </td>
+                    </motion.tr>
+                  ))}
+                </tbody>
+              </table>
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center py-20 text-gray-400">
+                <Users size={48} className="mb-4 opacity-20" />
+                <p className="font-bold tracking-tight">No users found</p>
+                <p className="text-sm">New users will appear here after registration.</p>
+              </div>
+            )}
           </div>
         ) : activeTab === 'books' ? (
           <div className="bg-white rounded-[2rem] shadow-sm border border-gray-100 overflow-hidden">

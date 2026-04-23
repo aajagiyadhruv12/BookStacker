@@ -129,12 +129,16 @@ class LoanService:
 
     @staticmethod
     def _build_user_map(db):
-        """Returns {uid: name} for all users and admins."""
+        """Returns {uid: name} for all users and admins. Limited to speed up."""
         user_map = {}
-        for col in ('users', 'admins'):
-            for doc in db.collection(col).stream():
-                d = doc.to_dict()
-                user_map[doc.id] = d.get('name') or d.get('email', doc.id)
+        try:
+            for col in ('users', 'admins'):
+                # Limit to 500 users to prevent hanging on huge datasets
+                for doc in db.collection(col).limit(500).stream():
+                    d = doc.to_dict()
+                    user_map[doc.id] = d.get('name') or d.get('email', doc.id)
+        except Exception as e:
+            print(f"Error building user map: {e}")
         return user_map
 
     @staticmethod
@@ -143,6 +147,8 @@ class LoanService:
             return obj.isoformat()
         if isinstance(obj, dict):
             return {k: LoanService._serialize(v) for k, v in obj.items()}
+        if isinstance(obj, list):
+            return [LoanService._serialize(i) for i in obj]
         return obj
 
     @staticmethod
@@ -150,12 +156,30 @@ class LoanService:
         db = get_db()
         if not db:
             return []
-        user_map = LoanService._build_user_map(db)
-        loans = []
-        for doc in db.collection('loans').stream():
-            loan = doc.to_dict()
-            loan['id'] = doc.id
-            loan['user_name'] = user_map.get(loan.get('user_id'), loan.get('user_id', 'Unknown'))
-            loan = LoanService._serialize(loan)
-            loans.append(loan)
-        return loans
+        try:
+            user_map = LoanService._build_user_map(db)
+            loans = []
+            # Fetch loans, sorted by date if possible
+            loan_query = db.collection('loans').order_by('issue_date', direction=firestore.Query.DESCENDING).limit(1000)
+            
+            for doc in loan_query.stream():
+                loan = doc.to_dict()
+                loan['id'] = doc.id
+                uid = loan.get('user_id')
+                loan['user_name'] = user_map.get(uid, uid or 'Unknown')
+                loans.append(LoanService._serialize(loan))
+            return loans
+        except Exception as e:
+            print(f"Error fetching all loans: {e}")
+            # Fallback if ordering fails (e.g. no index)
+            try:
+                loans = []
+                for doc in db.collection('loans').limit(500).stream():
+                    loan = doc.to_dict()
+                    loan['id'] = doc.id
+                    uid = loan.get('user_id')
+                    loan['user_name'] = user_map.get(uid, uid or 'Unknown')
+                    loans.append(LoanService._serialize(loan))
+                return loans
+            except:
+                return []
