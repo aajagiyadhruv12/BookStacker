@@ -5,7 +5,6 @@ from ..utils.auth import verify_token
 books_bp = Blueprint('books', __name__)
 
 @books_bp.route('', methods=['GET'])
-@verify_token
 def get_books():
     search = request.args.get('search')
     category = request.args.get('category')
@@ -16,7 +15,6 @@ def get_books():
     return jsonify(books)
 
 @books_bp.route('/<book_id>', methods=['GET'])
-@verify_token
 def get_book(book_id):
     book = BookService.get_book_by_id(book_id)
     if book:
