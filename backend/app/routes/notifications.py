@@ -1,9 +1,11 @@
 from flask import Blueprint, jsonify
 from ..firebase import get_db
+from ..utils.auth import verify_token
 
 notifications_bp = Blueprint('notifications', __name__)
 
 @notifications_bp.route('/user/<user_id>', methods=['GET'])
+@verify_token
 def get_notifications(user_id):
     db = get_db()
     if not db:
@@ -22,6 +24,7 @@ def get_notifications(user_id):
         return jsonify({'error': str(e)}), 500
 
 @notifications_bp.route('/mark-read/<notif_id>', methods=['POST'])
+@verify_token
 def mark_read(notif_id):
     db = get_db()
     if not db:
@@ -33,6 +36,7 @@ def mark_read(notif_id):
         return jsonify({'error': str(e)}), 500
 
 @notifications_bp.route('/mark-all-read/<user_id>', methods=['POST'])
+@verify_token
 def mark_all_read(user_id):
     db = get_db()
     if not db:
@@ -46,6 +50,7 @@ def mark_all_read(user_id):
         return jsonify({'error': str(e)}), 500
 
 @notifications_bp.route('/<notif_id>', methods=['DELETE'])
+@verify_token
 def delete_notification(notif_id):
     db = get_db()
     if not db:

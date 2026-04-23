@@ -293,6 +293,7 @@ const AdminPage = () => {
                   </motion.tr>
                 ))}
               </tbody>
+            </table>
             </div>
           </div>
         ) : activeTab === 'books' ? (
