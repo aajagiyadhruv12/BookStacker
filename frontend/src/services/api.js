@@ -6,10 +6,13 @@ const API_URL = import.meta.env.VITE_API_URL ||
     ? 'http://localhost:3000/api'
     : 'https://bookstacker.onrender.com/api');
 
+// Remove trailing slash if it exists
+const cleanBaseURL = API_URL.endsWith('/') ? API_URL.slice(0, -1) : API_URL;
+
 const api = axios.create({
-  baseURL: API_URL,
+  baseURL: cleanBaseURL,
   headers: { 'Content-Type': 'application/json' },
-  timeout: 30000,
+  timeout: 45000, // Increased timeout for Render cold starts
 });
 
 api.interceptors.request.use(async (config) => {

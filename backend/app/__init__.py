@@ -14,7 +14,7 @@ from .routes.notifications import notifications_bp
 
 def keep_alive():
     """Ping self every 14 minutes to prevent Render free tier cold starts."""
-    url = "https://bookstacker.onrender.com/ping"
+    url = os.getenv('BACKEND_URL', "https://bookstacker.onrender.com") + "/ping"
     while True:
         time.sleep(14 * 60)
         try:
@@ -25,10 +25,17 @@ def keep_alive():
 def create_app():
     app = Flask(__name__)
     app.config.from_object('config.Config')
+    
+    # More robust CORS configuration for deployment
     CORS(app, resources={r"/api/*": {
-        "origins": ["https://book-stacker.vercel.app", "http://localhost:5173", "http://localhost:3000"],
+        "origins": [
+            "https://book-stacker.vercel.app",
+            "https://book-stacker.vercel.app/",
+            "http://localhost:5173",
+            "http://localhost:3000"
+        ],
         "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-        "allow_headers": ["Content-Type", "Authorization", "Access-Control-Allow-Origin"],
+        "allow_headers": ["Content-Type", "Authorization", "Access-Control-Allow-Origin", "X-Requested-With"],
         "expose_headers": ["Content-Type", "Authorization"]
     }}, supports_credentials=True)
     init_firebase(app)
