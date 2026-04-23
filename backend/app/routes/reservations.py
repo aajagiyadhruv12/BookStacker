@@ -1,9 +1,11 @@
 from flask import Blueprint, request, jsonify
 from ..services.reservation_service import ReservationService
+from ..utils.auth import verify_token
 
 reservations_bp = Blueprint('reservations', __name__)
 
 @reservations_bp.route('', methods=['POST'])
+@verify_token
 def create_reservation():
     data = request.json
     user_id = data.get('user_id')
@@ -16,16 +18,19 @@ def create_reservation():
     return jsonify(result), status_code
 
 @reservations_bp.route('/<reservation_id>/cancel', methods=['POST'])
+@verify_token
 def cancel_reservation(reservation_id):
     result, status_code = ReservationService.cancel_reservation(reservation_id)
     return jsonify(result), status_code
 
 @reservations_bp.route('/user/<user_id>', methods=['GET'])
+@verify_token
 def get_user_reservations(user_id):
     reservations = ReservationService.get_user_reservations(user_id)
     return jsonify(reservations)
 
 @reservations_bp.route('', methods=['GET'])
+@verify_token
 def get_all_reservations():
     reservations = ReservationService.get_all_reservations()
     return jsonify(reservations)
