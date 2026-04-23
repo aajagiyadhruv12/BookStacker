@@ -1,3 +1,7 @@
+import threading
+import time
+import requests
+import os
 from flask import Flask
 from flask_cors import CORS
 from .firebase import init_firebase
@@ -6,8 +10,17 @@ from .routes.loans import loans_bp
 from .routes.users import users_bp
 from .routes.reservations import reservations_bp
 from .routes.dashboard import dashboard_bp
-
 from .routes.notifications import notifications_bp
+
+def keep_alive():
+    """Ping self every 14 minutes to prevent Render free tier cold starts."""
+    url = "https://bookstacker.onrender.com/ping"
+    while True:
+        time.sleep(14 * 60)
+        try:
+            requests.get(url, timeout=10)
+        except Exception:
+            pass
 
 def create_app():
     app = Flask(__name__)
@@ -25,6 +38,7 @@ def create_app():
     app.register_blueprint(reservations_bp, url_prefix='/api/reservations')
     app.register_blueprint(dashboard_bp, url_prefix='/api/dashboard')
     app.register_blueprint(notifications_bp, url_prefix='/api/notifications')
+
     @app.route('/')
     def index():
         from .firebase import get_db, get_init_error
@@ -35,7 +49,17 @@ def create_app():
             "firebase_status": "Connected" if db else "Disconnected",
             "error_details": error if not db else None
         }
+
+    @app.route('/ping')
+    def ping():
+        return {"status": "ok"}, 200
+
+    # Start keep-alive thread only in production
+    if os.getenv('FLASK_ENV') == 'production':
+        t = threading.Thread(target=keep_alive, daemon=True)
+        t.start()
+
     return app
 
-# Expose app for Gunicorn's default 'app:app' command
+# Expose app for Gunicorn
 app = create_app()

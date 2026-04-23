@@ -3,7 +3,7 @@ services:
     name: BookStacker-Backend
     env: python
     buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn wsgi:app
+    startCommand: gunicorn wsgi:app --workers 1 --timeout 120
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.0
@@ -11,4 +11,9 @@ services:
         value: production
       - key: DEBUG
         value: "False"
-      # Note: You must still add SECRET_KEY and FIREBASE_SERVICE_ACCOUNT_JSON manually in the Render Dashboard
+      - key: SECRET_KEY
+        value: supersecretkey-bookstacker-2024
+      - key: FIREBASE_STORAGE_BUCKET
+        value: bookstacker0.firebasestorage.app
+      # IMPORTANT: Add FIREBASE_SERVICE_ACCOUNT_JSON manually in Render Dashboard > Environment
+      # Paste the entire contents of serviceAccountKey.json as a single line string
